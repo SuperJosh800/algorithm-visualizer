@@ -40,14 +40,17 @@ class DrawInformation:
         self.start_x = self.SIDE_PAD // 2
 
 
-def draw(draw_info):
+def draw(draw_info, algo_name, ascending):
     draw_info.window.fill(draw_info.BACKGROUND_COLOUR)
 
+    title = draw_info.FONT.render(f"{algo_name} - {'Ascending' if ascending else 'Descending'}", 1 , draw_info.BLACK)
+    draw_info.window.blit(title, (draw_info.width/2 - title.get_width()/2, 5))
+
     controls = draw_info.FONT.render(" Reset - R | Start Sorting - SPACE | Ascending - A | Decending - D", 1 , draw_info.BLACK)
-    draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2, 5))
+    draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2, 35))
 
     Sorting = draw_info.FONT.render(" Insertion Sort - I | Bubble Sort - B ", 1 , draw_info.BLACK)
-    draw_info.window.blit(Sorting, (draw_info.width/2 - Sorting.get_width()/2, 45))
+    draw_info.window.blit(Sorting, (draw_info.width/2 - Sorting.get_width()/2, 65))
 
     draw_list(draw_info)
     pygame.display.update()
@@ -118,7 +121,7 @@ def main():
     sorting_algorithm_generator = None
 
     while run:
-        clock.tick(60)
+        clock.tick(200)
 
         if sorting:
             try:
@@ -126,8 +129,7 @@ def main():
             except StopIteration:
                 sorting = False
         else:
-
-            draw(draw_info)
+            draw(draw_info, sorting_algo_name, ascending)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT: #lets us quit the game by clicking the x
