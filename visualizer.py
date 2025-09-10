@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 pygame.init() 
 
 class DrawInformation:
@@ -35,8 +36,9 @@ class DrawInformation:
         self.max_value = max(lst)
 
         self.block_width = round((self.width - self.SIDE_PAD) / len(lst))
-        self.block_height = round((self.height - self.TOP_PAD) / (self.max_value - self.min_value))
+        self.block_height = math.floor((self.height - self.TOP_PAD) / (self.max_value - self.min_value))
         self.start_x = self.SIDE_PAD // 2
+
 
 def draw(draw_info):
     draw_info.window.fill(draw_info.BACKGROUND_COLOUR)
@@ -89,12 +91,12 @@ def bubble_sort(draw_info, ascending=True):
 
     for i in range(len(lst) - 1):
         for j in range(len(lst) - 1 - i):
-            num1 = list[j]
+            num1 = lst[j]
             num2 = lst[j + 1]
 
             if (num1 > num2 and ascending) or (num1 < num2 and not ascending):
                 lst[j], lst[j + 1] = lst[j + 1], lst[j]
-                draw_list(draw_info, {j: draw_info.GREEN, j + 1: draw_info.RED})
+                draw_list(draw_info, {j: draw_info.GREEN, j + 1: draw_info.RED}, True)
                 yield True
     return
 
@@ -134,9 +136,10 @@ def main():
                 continue
 
             if event.key == pygame.K_r:
+                sorting = False
                 lst = generate_starting_list(n, min_value, max_value)
                 draw_info.set_list(lst)
-                sorting == False
+                
             elif event.key == pygame.K_SPACE and sorting == False:
                 sorting = True
                 sorting_algorithm_generator = sorting_algorithm(draw_info, ascending)
